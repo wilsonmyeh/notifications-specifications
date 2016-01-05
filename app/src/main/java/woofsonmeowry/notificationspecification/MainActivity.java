@@ -1,6 +1,7 @@
 package woofsonmeowry.notificationspecification;
 
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    private final int ONGOING_NOTIFICATIONLISTENER_ID = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +27,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        Notification notification = new Notification.Builder(this)
-                .setContentTitle("Mary Alarm: Active")
-                .build();
-        NotificationListenerServ notifListen = new NotificationListenerServ();
-        notifListen.startForeground(ONGOING_NOTIFICATIONLISTENER_ID, notification);
+        System.out.println("Main1");
+        Intent intent = new Intent(this, NotificationListenerServ.class);
+        startService(intent);
+        System.out.println("Main2");
     }
 
     @Override
