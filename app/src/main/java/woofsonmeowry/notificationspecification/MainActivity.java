@@ -1,10 +1,14 @@
 package woofsonmeowry.notificationspecification;
 
-import android.app.Notification;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private MediaPlayer player;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +33,38 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        System.out.println("Main1");
+
+        // Permission to read notifications
+        startActivityForResult(new Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS), 0);
+
+        try
+        {
+            player = MediaPlayer.create(this, R.raw.trust_me);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Media Error");
+        }
+
         Intent intent = new Intent(this, NotificationListenerServ.class);
         startService(intent);
-        System.out.println("Main2");
     }
+
+    // handler for received Intents for the "mary-event" event
+    private BroadcastReceiver maryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            System.out.println("Mary Message!");
+            player.start();
+        }
+    };
+    @Override
+     public void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(maryReceiver, new IntentFilter("mary-event"));
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
