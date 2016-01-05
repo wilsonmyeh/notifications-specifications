@@ -21,6 +21,7 @@ public class NotificationListenerServ extends NotificationListenerService {
             title = title.toString();
             str += title;
         }
+        System.out.println(str);
         if(containsMary(str))
             r.play();
     }
