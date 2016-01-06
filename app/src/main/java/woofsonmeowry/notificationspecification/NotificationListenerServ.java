@@ -36,6 +36,7 @@ public class NotificationListenerServ extends NotificationListenerService {
         System.out.println(str);
         if(containsMary(str))
         {
+            System.out.println("Mary acquired!");
             Intent intent = new Intent("mary-event");
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
@@ -62,7 +63,7 @@ public class NotificationListenerServ extends NotificationListenerService {
     {
         for(String alias : maryAliases)
         {
-            if(str.contains(alias))
+            if(str.toLowerCase().contains(alias))
                 return true;
         }
         return false;
