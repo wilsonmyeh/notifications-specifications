@@ -18,7 +18,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer player;
-    private AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    private AudioManager am;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         {
             System.out.println("Media Error");
         }
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         Intent intent = new Intent(this, NotificationListenerServ.class);
         startService(intent);
