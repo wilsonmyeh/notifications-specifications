@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer player;
+    private AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // handler for received Intents for the "mary-event" event
+    @SuppressWarnings("deprecation")
     private BroadcastReceiver maryReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             System.out.println("Mary Message!");
+            if(am.isWiredHeadsetOn()) // Set alarm to max volume if headphones aren't plugged in (no hearing loss!)
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
             player.start();
         }
     };
